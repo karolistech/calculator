@@ -9,5 +9,36 @@
     <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
+    <div class="calculator">
+      <div class="calculator__screen">
+        <output class="calculator__output calculator__output--secondary"></output>
+        <output class="calculator__output calculator__output--primary">0</output>
+      </div>
+
+      <div class="calculator__buttons">
+        <button class="calculator__btn calculator__btn--clear" data-action="clear">ac</button>
+        <button class="calculator__btn calculator__btn--del" data-action="del">del</button>
+
+        <button class="calculator__btn calculator__btn--digit" data-digit="7">7</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="8">8</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="9">9</button>
+        <button class="calculator__btn calculator__btn--operator" data-operator="divide">÷</button>
+
+        <button class="calculator__btn calculator__btn--digit" data-digit="4">4</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="5">5</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="6">6</button>
+        <button class="calculator__btn calculator__btn--operator" data-operator="multiply">×</button>
+
+        <button class="calculator__btn calculator__btn--digit" data-digit="1">1</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="2">2</button>
+        <button class="calculator__btn calculator__btn--digit" data-digit="3">3</button>
+        <button class="calculator__btn calculator__btn--operator" data-operator="subtract">−</button>
+
+        <button class="calculator__btn calculator__btn--digit" data-digit="0">0</button>
+        <button class="calculator__btn calculator__btn--decimal-point" data-decimal-point=".">.</button>
+        <button class="calculator__btn calculator__btn--evaluate" data-action="evaluate">=</button>
+        <button class="calculator__btn calculator__btn--operator" data-operator="add">+</button>
+      </div>
+    </div>
   </body>
 </html>
