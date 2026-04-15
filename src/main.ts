@@ -39,6 +39,37 @@ function inputOperator(operator: Operator) {
   }
 }
 
+function evaluate() {
+  if (state.firstOperand === null || state.operator === null || state.input === "") return;
+
+  state.secondOperand = Number(state.input);
+
+  const { firstOperand, operator, secondOperand } = state;
+
+  const result = calculate(firstOperand, operator, secondOperand);
+
+  secondaryOutput.textContent = `${firstOperand} ${operators[operator]} ${secondOperand} =`;
+  primaryOutput.textContent = String(result);
+
+  state.firstOperand = result;
+  state.operator = null;
+  state.secondOperand = null;
+  state.input = "";
+}
+
+function calculate(a: number, operator: Operator, b: number) {
+  switch (operator) {
+    case "add":
+      return a + b;
+    case "subtract":
+      return a - b;
+    case "multiply":
+      return a * b;
+    case "divide":
+      return a / b;
+  }
+}
+
 function handleButtonInput(e: Event) {
   if (!(e.target instanceof HTMLButtonElement)) return;
 
@@ -46,6 +77,7 @@ function handleButtonInput(e: Event) {
 
   if (digit) inputDigit(digit);
   if (operator) inputOperator(operator as Operator);
+  if (action === "evaluate") evaluate();
 }
 
 function init() {
