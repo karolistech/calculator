@@ -70,6 +70,23 @@ function calculate(a: number, operator: Operator, b: number) {
   }
 }
 
+function clear() {
+  state.firstOperand = null;
+  state.operator = null;
+  state.secondOperand = null;
+  state.input = "";
+  secondaryOutput.textContent = "";
+  primaryOutput.textContent = "0";
+}
+
+function del() {
+  if (state.input === "") return;
+
+  state.input = state.input.slice(0, -1);
+
+  primaryOutput.textContent = state.input || "0";
+}
+
 function handleButtonInput(e: Event) {
   if (!(e.target instanceof HTMLButtonElement)) return;
 
@@ -77,6 +94,8 @@ function handleButtonInput(e: Event) {
 
   if (digit) inputDigit(digit);
   if (operator) inputOperator(operator as Operator);
+  if (action === "clear") clear();
+  if (action === "del") del();
   if (action === "evaluate") evaluate();
 }
 
