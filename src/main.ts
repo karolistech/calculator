@@ -23,6 +23,14 @@ function inputDigit(digit: string) {
   primaryOutput.textContent = state.input;
 }
 
+function inputDecimalPoint() {
+  if (state.input.includes(".")) return;
+
+  state.input = state.input === "" ? "0." : state.input + ".";
+
+  primaryOutput.textContent = state.input;
+}
+
 function inputOperator(operator: Operator) {
   if (state.operator === null && state.input !== "") {
     state.firstOperand = Number(state.input);
@@ -93,6 +101,7 @@ function handleButtonInput(e: Event) {
   const { digit, decimalPoint, operator, action } = e.target.dataset;
 
   if (digit) inputDigit(digit);
+  if (decimalPoint) inputDecimalPoint();
   if (operator) inputOperator(operator as Operator);
   if (action === "clear") clear();
   if (action === "del") del();
