@@ -15,16 +15,20 @@ const state = {
   firstOperand: null as number | null,
   operator: null as Operator | null,
   secondOperand: null as number | null,
+  error: false,
   input: ""
 };
 
 function inputDigit(digit: string) {
+  if (state.error === true) return;
+
   state.input = state.input === "0" ? digit : state.input + digit;
+
   primaryOutput.textContent = state.input;
 }
 
 function inputDecimalPoint() {
-  if (state.input.includes(".")) return;
+  if (state.error === true || state.input.includes(".")) return;
 
   state.input = state.input === "" ? "0." : state.input + ".";
 
@@ -32,6 +36,8 @@ function inputDecimalPoint() {
 }
 
 function inputOperator(operator: Operator) {
+  if (state.error === true) return;
+
   if (state.operator === null && state.input !== "") {
     state.firstOperand = Number(state.input);
     state.operator = operator;
@@ -55,6 +61,7 @@ function evaluate() {
   const { firstOperand, operator, secondOperand } = state;
 
   const result = calculate(firstOperand, operator, secondOperand);
+  if (Number.isNaN(result)) state.error = true;
 
   secondaryOutput.textContent = `${firstOperand} ${operators[operator]} ${secondOperand} =`;
   primaryOutput.textContent = String(result);
@@ -82,13 +89,14 @@ function clear() {
   state.firstOperand = null;
   state.operator = null;
   state.secondOperand = null;
+  state.error = false;
   state.input = "";
   secondaryOutput.textContent = "";
   primaryOutput.textContent = "0";
 }
 
 function del() {
-  if (state.input === "") return;
+  if (state.error === true || state.input === "") return;
 
   state.input = state.input.slice(0, -1);
 
