@@ -132,7 +132,22 @@ function handleButtonInput(e: Event) {
   if (action === "evaluate") evaluate();
 }
 
+function handleKeyboardInput(e: KeyboardEvent) {
+  const key = e.key;
+
+  if (key >= "0" && key <= "9") inputDigit(key);
+  if (key === ".") inputDecimalPoint();
+  if (key === "+") inputOperator("add");
+  if (key === "-") inputOperator("subtract");
+  if (key === "*") inputOperator("multiply");
+  if (key === "/") { e.preventDefault(); inputOperator("divide"); }
+  if (key === "Escape") clear();
+  if (key === "Backspace") del();
+  if (key === "=" || key === "Enter") { e.preventDefault(); evaluate(); }
+}
+
 function init() {
+  document.addEventListener("keydown", handleKeyboardInput);
   buttons.addEventListener("click", handleButtonInput);
 }
 
