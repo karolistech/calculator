@@ -2,6 +2,8 @@ const primaryOutput = document.querySelector<HTMLOutputElement>(".calculator__ou
 const secondaryOutput = document.querySelector<HTMLOutputElement>(".calculator__output--secondary")!;
 const buttons = document.querySelector<HTMLDivElement>(".calculator__buttons")!;
 
+const config = { maxInputLength: 12, maxDisplayLength: 16 };
+
 type Operator = "add" | "subtract" | "multiply" | "divide";
 
 const operators: Record<Operator, string> = {
@@ -20,7 +22,8 @@ const state = {
 };
 
 function inputDigit(digit: string) {
-  if (state.error === true) return;
+  if (state.error === true || state.input.length >= config.maxInputLength) return;
+  if (state.operator === null && state.input === "") secondaryOutput.textContent = "";
 
   state.input = state.input === "0" ? digit : state.input + digit;
 
@@ -29,6 +32,7 @@ function inputDigit(digit: string) {
 
 function inputDecimalPoint() {
   if (state.error === true || state.input.includes(".")) return;
+  if (state.operator === null && state.input === "") secondaryOutput.textContent = "";
 
   state.input = state.input === "" ? "0." : state.input + ".";
 
@@ -43,13 +47,14 @@ function inputOperator(operator: Operator) {
     state.operator = operator;
     state.input = "";
 
-    secondaryOutput.textContent = `${state.firstOperand} ${operators[operator]}`;
+    secondaryOutput.textContent = `${format(state.firstOperand)} ${operators[operator]}`;
+    primaryOutput.textContent = format(state.firstOperand);
   }
 
   else if (state.firstOperand !== null && state.input === "") {
     state.operator = operator;
 
-    secondaryOutput.textContent = `${state.firstOperand} ${operators[operator]}`;
+    secondaryOutput.textContent = `${format(state.firstOperand)} ${operators[operator]}`;
   }
 }
 
@@ -63,8 +68,8 @@ function evaluate() {
   const result = calculate(firstOperand, operator, secondOperand);
   if (Number.isNaN(result)) state.error = true;
 
-  secondaryOutput.textContent = `${firstOperand} ${operators[operator]} ${secondOperand} =`;
-  primaryOutput.textContent = String(result);
+  secondaryOutput.textContent = `${format(firstOperand)} ${operators[operator]} ${format(secondOperand)} =`;
+  primaryOutput.textContent = format(result);
 
   state.firstOperand = result;
   state.operator = null;
@@ -101,6 +106,17 @@ function del() {
   state.input = state.input.slice(0, -1);
 
   primaryOutput.textContent = state.input || "0";
+}
+
+function format(value: number): string {
+  const fixed = value.toFixed(12).replace(/\.?0+$/, "");
+  if (fixed.length <= config.maxDisplayLength) return fixed;
+
+  const rounded = value.toFixed(6).replace(/\.?0+$/, "");
+  if (rounded.length <= config.maxDisplayLength) return rounded;
+
+  const scientific = value.toExponential(6).replace(/\.?0+e/, "e");
+  return scientific;
 }
 
 function handleButtonInput(e: Event) {
