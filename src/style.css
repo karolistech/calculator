@@ -55,10 +55,74 @@ body {
 
 .calculator__btn {
   aspect-ratio: 1 / 1;
+  border: 2px solid #333;
+  border-radius: 4px;
+  color: #000;
+  font-family: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
 }
 
 .calculator__btn--clear,
 .calculator__btn--del {
   grid-column: span 2;
   aspect-ratio: auto;
+  text-transform: uppercase;
+}
+
+.calculator__btn--clear {
+  background-color: #f88;
+}
+
+.calculator__btn--del {
+  background-color: #88f;
+}
+
+.calculator__btn--digit,
+.calculator__btn--decimal-point,
+.calculator__btn--evaluate {
+  background-color: #eee;
+}
+
+.calculator__btn--operator {
+  background-color: #fc4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .calculator__btn--clear:hover {
+    background-color: #f77;
+  }
+
+  .calculator__btn--clear:active {
+    background-color: #f66;
+  }
+
+  .calculator__btn--del:hover {
+    background-color: #77f;
+  }
+
+  .calculator__btn--del:active {
+    background-color: #66f;
+  }
+
+  .calculator__btn--digit:hover,
+  .calculator__btn--decimal-point:hover,
+  .calculator__btn--evaluate:hover {
+    background-color: #ddd;
+  }
+
+  .calculator__btn--digit:active,
+  .calculator__btn--decimal-point:active,
+  .calculator__btn--evaluate:active {
+    background-color: #ccc;
+  }
+
+  .calculator__btn--operator:hover {
+    background-color: #fb4;
+  }
+
+  .calculator__btn--operator:active {
+    background-color: #fa4;
+  }
 }
