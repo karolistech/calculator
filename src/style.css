@@ -3,3 +3,47 @@
   margin: 0;
   padding: 0;
 }
+
+body {
+  min-height: 100vh;
+  padding-inline: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.calculator {
+  width: min(100%, 350px);
+  padding: 1.25rem;
+  border: 2px solid #333;
+}
+
+.calculator__screen {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 0.5rem;
+  border: 2px solid #333;
+}
+
+.calculator__input {
+  min-height: 40px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.calculator__buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 0.75rem;
+}
+
+.calculator__btn {
+  aspect-ratio: 1 / 1;
+}
+
+.calculator__btn--clear,
+.calculator__btn--delete {
+  grid-column: span 2;
+  aspect-ratio: auto;
+}
