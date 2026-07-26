@@ -12,6 +12,7 @@ function $<T extends HTMLElement>(selector: string, constructor: new () => T): T
   return element;
 }
 
+const currentInput = $(".calculator__input--current", HTMLDivElement);
 const buttons = $(".calculator__buttons", HTMLDivElement);
 
 type Operator = "add" | "subtract" | "multiply" | "divide";
@@ -32,12 +33,38 @@ const calculator: Calculator = {
 
 function setState(state: State) {
   calculator.state = state;
+
+  render();
+}
+
+function render() {
+  const state = calculator.state;
+
+  switch (state.type) {
+    case "operand1":
+      currentInput.textContent = state.input;
+      return;
+  }
+}
+
+function inputDigit(digit: string) {
+  const state = calculator.state;
+
+  switch (state.type) {
+    case "operand1":
+      return setState({
+        type: "operand1",
+        input: state.input === "0" ? digit : state.input + digit
+      });
+  }
 }
 
 function handleButtonInput(e: Event) {
   if (!(e.target instanceof HTMLButtonElement)) return;
 
   const { digit, decimalPoint, operator, action } = e.target.dataset;
+
+  if (digit) inputDigit(digit);
 }
 
 function init() {
