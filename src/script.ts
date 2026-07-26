@@ -53,6 +53,11 @@ function render() {
       previousInput.textContent = `${state.operand1} ${symbols[state.operator]}`;
       currentInput.textContent = String(state.operand1);
       return;
+
+    case "operand2":
+      previousInput.textContent = `${state.operand1} ${symbols[state.operator]}`;
+      currentInput.textContent = state.input;
+      return;
   }
 }
 
@@ -63,6 +68,22 @@ function inputDigit(digit: string) {
     case "operand1":
       return setState({
         type: "operand1",
+        input: state.input === "0" ? digit : state.input + digit
+      });
+
+    case "operator":
+      return setState({
+        type: "operand2",
+        operand1: state.operand1,
+        operator: state.operator,
+        input: digit
+      });
+
+    case "operand2":
+      return setState({
+        type: "operand2",
+        operand1: state.operand1,
+        operator: state.operator,
         input: state.input === "0" ? digit : state.input + digit
       });
   }
