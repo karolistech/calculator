@@ -46,6 +46,7 @@ function render() {
 
   switch (state.type) {
     case "operand1":
+      previousInput.textContent = "";
       currentInput.textContent = state.input;
       return;
 
@@ -63,6 +64,10 @@ function render() {
       previousInput.textContent = `${state.operand1} ${symbols[state.operator]} ${state.operand2} =`;
       currentInput.textContent = String(state.result);
   }
+}
+
+function inputClear() {
+  setState({ type: "operand1", input: "0" });
 }
 
 function inputDigit(digit: string) {
@@ -157,6 +162,7 @@ function handleButtonInput(e: Event) {
   if (operator === "subtract") inputOperator(operator);
   if (operator === "multiply") inputOperator(operator);
   if (operator === "divide") inputOperator(operator);
+  if (action === "clear") inputClear();
   if (action === "evaluate") inputEvaluate();
 }
 
