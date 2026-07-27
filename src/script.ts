@@ -58,6 +58,10 @@ function render() {
       previousInput.textContent = `${state.operand1} ${symbols[state.operator]}`;
       currentInput.textContent = state.input;
       return;
+
+    case "result":
+      previousInput.textContent = `${state.operand1} ${symbols[state.operator]} ${state.operand2} =`;
+      currentInput.textContent = String(state.result);
   }
 }
 
@@ -109,6 +113,40 @@ function inputOperator(operator: Operator) {
   }
 }
 
+function inputEvaluate() {
+  const state = calculator.state;
+
+  switch (state.type) {
+    case "operand2":
+      const operand2 = Number(state.input);
+      const result = calculate(state.operand1, state.operator, operand2);
+
+      setState({
+        type: "result",
+        operand1: state.operand1,
+        operator: state.operator,
+        operand2: operand2,
+        result: result
+      });
+  }
+}
+
+function calculate(operand1: number, operator: Operator, operand2: number): number {
+  switch (operator) {
+    case "add":
+      return operand1 + operand2;
+
+    case "subtract":
+      return operand1 - operand2;
+
+    case "multiply":
+      return operand1 * operand2;
+
+    case "divide":
+      return operand1 / operand2;
+  }
+}
+
 function handleButtonInput(e: Event) {
   if (!(e.target instanceof HTMLButtonElement)) return;
 
@@ -119,6 +157,7 @@ function handleButtonInput(e: Event) {
   if (operator === "subtract") inputOperator(operator);
   if (operator === "multiply") inputOperator(operator);
   if (operator === "divide") inputOperator(operator);
+  if (action === "evaluate") inputEvaluate();
 }
 
 function init() {
