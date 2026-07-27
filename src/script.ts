@@ -70,6 +70,26 @@ function inputClear() {
   setState({ type: "operand1", input: "0" });
 }
 
+function inputDelete() {
+  const state = calculator.state;
+
+  switch (state.type) {
+    case "operand1":
+      return setState({
+        type: "operand1",
+        input: state.input.slice(0, -1) || "0"
+      });
+
+    case "operand2":
+      setState({
+        type: "operand2",
+        operand1: state.operand1,
+        operator: state.operator,
+        input: state.input.slice(0, -1) || "0"
+      });
+  }
+}
+
 function inputDigit(digit: string) {
   const state = calculator.state;
 
@@ -163,6 +183,7 @@ function handleButtonInput(e: Event) {
   if (operator === "multiply") inputOperator(operator);
   if (operator === "divide") inputOperator(operator);
   if (action === "clear") inputClear();
+  if (action === "delete") inputDelete();
   if (action === "evaluate") inputEvaluate();
 }
 
