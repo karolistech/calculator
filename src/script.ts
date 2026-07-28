@@ -118,6 +118,41 @@ function inputDigit(digit: string) {
   }
 }
 
+function inputDecimalPoint(decimalPoint: string) {
+  const state = calculator.state;
+
+  switch (state.type) {
+    case "operand1":
+      if (state.input.includes(decimalPoint)) return;
+
+      return setState({
+        type: "operand1",
+        input: state.input + decimalPoint
+      });
+
+    case "operator":
+      return setState({
+        type: "operand2",
+        operand1: state.operand1,
+        operator: state.operator,
+        input: "0" + decimalPoint
+      });
+
+    case "operand2":
+      if (state.input.includes(decimalPoint)) return;
+
+      return setState({
+        type: "operand2",
+        operand1: state.operand1,
+        operator: state.operator,
+        input: state.input + decimalPoint
+      });
+
+    case "result":
+      setState({ type: "operand1", input: "0" + decimalPoint });
+  }
+}
+
 function inputOperator(operator: Operator) {
   const state = calculator.state;
 
@@ -178,6 +213,7 @@ function handleButtonInput(e: Event) {
   const { digit, decimalPoint, operator, action } = e.target.dataset;
 
   if (digit) inputDigit(digit);
+  if (decimalPoint) inputDecimalPoint(decimalPoint);
   if (operator === "add") inputOperator(operator);
   if (operator === "subtract") inputOperator(operator);
   if (operator === "multiply") inputOperator(operator);
