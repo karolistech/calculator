@@ -115,6 +115,9 @@ function inputDigit(digit: string) {
         operator: state.operator,
         input: state.input === "0" ? digit : state.input + digit
       });
+
+    case "result":
+      setState({ type: "operand1", input: digit });
   }
 }
 
