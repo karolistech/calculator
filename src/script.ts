@@ -170,6 +170,23 @@ function inputOperator(operator: Operator) {
         operand1: state.operand1,
         operator: operator
       });
+
+    case "operand2":
+      const operand2 = Number(state.input);
+      const result = calculate(state.operand1, state.operator, operand2);
+
+      return setState({
+        type: "operator",
+        operand1: result,
+        operator: operator
+      });
+
+    case "result":
+      setState({
+        type: "operator",
+        operand1: state.result,
+        operator: operator
+      });
   }
 }
 
