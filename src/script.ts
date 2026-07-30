@@ -25,11 +25,13 @@ type State =
   | { type: "result"; operand1: number; operator: Operator; operand2: number; result: number };
 
 type Calculator = {
+  configuration: { maxInputLength: number; maxDisplayLength: number };
   operatorSymbols: Record<Operator, string>;
   state: State;
 };
 
 const calculator: Calculator = {
+  configuration: { maxInputLength: 12, maxDisplayLength: 16 },
   operatorSymbols: { add: "+", subtract: "−", multiply: "×", divide: "÷" },
   state: { type: "operand1", input: "0" }
 };
@@ -51,18 +53,18 @@ function render() {
       return;
 
     case "operator":
-      previousInput.textContent = `${state.operand1} ${symbols[state.operator]}`;
-      currentInput.textContent = String(state.operand1);
+      previousInput.textContent = `${format(state.operand1)} ${symbols[state.operator]}`;
+      currentInput.textContent = format(state.operand1);
       return;
 
     case "operand2":
-      previousInput.textContent = `${state.operand1} ${symbols[state.operator]}`;
+      previousInput.textContent = `${format(state.operand1)} ${symbols[state.operator]}`;
       currentInput.textContent = state.input;
       return;
 
     case "result":
-      previousInput.textContent = `${state.operand1} ${symbols[state.operator]} ${state.operand2} =`;
-      currentInput.textContent = String(state.result);
+      previousInput.textContent = `${format(state.operand1)} ${symbols[state.operator]} ${format(state.operand2)} =`;
+      currentInput.textContent = format(state.result);
   }
 }
 
@@ -91,10 +93,13 @@ function inputDelete() {
 }
 
 function inputDigit(digit: string) {
+  const config = calculator.configuration;
   const state = calculator.state;
 
   switch (state.type) {
     case "operand1":
+      if (state.input.length >= config.maxInputLength) return;
+
       return setState({
         type: "operand1",
         input: state.input === "0" ? digit : state.input + digit
@@ -109,6 +114,8 @@ function inputDigit(digit: string) {
       });
 
     case "operand2":
+      if (state.input.length >= config.maxInputLength) return;
+
       return setState({
         type: "operand2",
         operand1: state.operand1,
@@ -225,6 +232,19 @@ function calculate(operand1: number, operator: Operator, operand2: number): numb
     case "divide":
       return operand1 / operand2;
   }
+}
+
+function format(value: number): string {
+  const config = calculator.configuration;
+
+  const fixed = value.toFixed(12).replace(/\.?0+$/, "");
+  if (fixed.length <= config.maxDisplayLength) return fixed;
+
+  const rounded = value.toFixed(6).replace(/\.?0+$/, "");
+  if (rounded.length <= config.maxDisplayLength) return rounded;
+
+  const scientific = value.toExponential(6).replace(/\.?0+e/, "e");
+  return scientific;
 }
 
 function handleButtonInput(e: Event) {
