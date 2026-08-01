@@ -55,10 +55,47 @@ body {
 
 .calculator__btn {
   aspect-ratio: 1 / 1;
+  border: 2px solid #333;
+  border-radius: 4px;
+  color: #000;
+  -webkit-tap-highlight-color: rgba(170, 170, 170, 0.4);
+  font-family: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+  touch-action: manipulation;
 }
 
 .calculator__btn--clear,
 .calculator__btn--delete {
   grid-column: span 2;
   aspect-ratio: auto;
+  text-transform: uppercase;
+}
+
+.calculator__btn--clear {
+  background-color: #f88;
+}
+
+.calculator__btn--delete {
+  background-color: #88f;
+}
+
+.calculator__btn--digit,
+.calculator__btn--decimal-point,
+.calculator__btn--evaluate {
+  background-color: #eee;
+}
+
+.calculator__btn--operator {
+  background-color: #fc4;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .calculator__btn:hover {
+    filter: brightness(0.9);
+  }
+
+  .calculator__btn:active {
+    filter: brightness(0.85);
+  }
 }
